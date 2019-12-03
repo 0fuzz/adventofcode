@@ -8,6 +8,7 @@ $lineTwo = ['L998','U308','R889','D471','R719','U326','L6','U802','L608','U149',
 $coordsLineTwo = [];
 $currentX = 0;
 $currentY = 0;
+$lineLength = 0;
 foreach ($lineTwo as $lineExpand) {
     $direction = $lineExpand[0];
     $amount = substr($lineExpand, 1);
@@ -16,25 +17,33 @@ foreach ($lineTwo as $lineExpand) {
         case 'U':
             for ($i = 0;$i < $amount;$i++) {
                 $currentY++;
-                $coordsLineTwo[$currentX][$currentY] = 1;
+                $lineLength++;
+                if (!isset($coordsLineTwo[$currentX][$currentY]))
+                    $coordsLineTwo[$currentX][$currentY] = $lineLength;
             } 
             break;
         case 'D':
             for ($i = 0;$i < $amount;$i++) {
                 $currentY--;
-                $coordsLineTwo[$currentX][$currentY] = 1;
+                $lineLength++;
+                if (!isset($coordsLineTwo[$currentX][$currentY]))
+                    $coordsLineTwo[$currentX][$currentY] = $lineLength;
             } 
             break;   
         case 'L':
             for ($i = 0;$i < $amount;$i++) {
                 $currentX--;
-                $coordsLineTwo[$currentX][$currentY] = 1;
+                $lineLength++;
+                if (!isset($coordsLineTwo[$currentX][$currentY]))
+                    $coordsLineTwo[$currentX][$currentY] = $lineLength;
             } 
             break;  
         case 'R':
             for ($i = 0;$i < $amount;$i++) {
                 $currentX++;
-                $coordsLineTwo[$currentX][$currentY] = 1;
+                $lineLength++;
+                if (!isset($coordsLineTwo[$currentX][$currentY]))
+                    $coordsLineTwo[$currentX][$currentY] = $lineLength;
             } 
             break;  
     }
@@ -43,6 +52,7 @@ foreach ($lineTwo as $lineExpand) {
 $coordsLineOne = [];
 $currentX = 0;
 $currentY = 0;
+$lineLength = 0;
 foreach ($lineOne as $lineExpand) {
     $direction = $lineExpand[0];
     $amount = substr($lineExpand, 1);
@@ -51,25 +61,33 @@ foreach ($lineOne as $lineExpand) {
         case 'U':
             for ($i = 0;$i < $amount;$i++) {
                 $currentY++;
-                $coordsLineOne[$currentX][$currentY] = 1;
+                $lineLength++;
+                if (!isset($coordsLineOne[$currentX][$currentY]))
+                    $coordsLineOne[$currentX][$currentY] = $lineLength;
             } 
             break;
         case 'D':
             for ($i = 0;$i < $amount;$i++) {
                 $currentY--;
-                $coordsLineOne[$currentX][$currentY] = 1;
+                $lineLength++;
+                if (!isset($coordsLineOne[$currentX][$currentY]))
+                    $coordsLineOne[$currentX][$currentY] = $lineLength;
             } 
             break;   
         case 'L':
             for ($i = 0;$i < $amount;$i++) {
                 $currentX--;
-                $coordsLineOne[$currentX][$currentY] = 1;
+                $lineLength++;
+                if (!isset($coordsLineOne[$currentX][$currentY]))
+                    $coordsLineOne[$currentX][$currentY] = $lineLength;
             } 
             break;  
         case 'R':
             for ($i = 0;$i < $amount;$i++) {
                 $currentX++;
-                $coordsLineOne[$currentX][$currentY] = 1;
+                $lineLength++;
+                if (!isset($coordsLineOne[$currentX][$currentY]))
+                    $coordsLineOne[$currentX][$currentY] = $lineLength;
             } 
             break;  
     }
@@ -77,21 +95,17 @@ foreach ($lineOne as $lineExpand) {
 
 $intersections = [];
 
-$lowestdistance = 999999;
+$lowestdistance = 9999999;
 // now loop one, and see if it is in two
 foreach ($coordsLineOne as $x => $value) {
     if (array_key_exists($x, $coordsLineTwo)) {
-        foreach ($value as $y => $ignore) {
+        foreach ($value as $y => $lineLength) {
             if (array_key_exists($y, $coordsLineTwo[$x])) {
                 // found intersection
-                if (abs($x) + abs($y) < $lowestdistance) {
-                    $lowestdistance = abs($x) + abs($y);
-                }
+                $lowestdistance = min($lowestdistance,$lineLength+$coordsLineTwo[$x][$y]);
             }
         }
     }
 }
 
 echo $lowestdistance;
-
-?>
