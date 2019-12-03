@@ -1,8 +1,5 @@
 <?php
 
-<?php
-        //Enter your code here, enjoy!
-
 $array = [123457,
 98952,
 65241,
@@ -103,15 +100,18 @@ $array = [123457,
 107605,
 77797,
 124355];
-
 $fuel = 0;
 $total = 0;
 foreach ($array as $mass) {
     $fuel = floor($mass/3) - 2;
     if ($fuel < 0) $fuel = 0;
-    $total += $fuel;
+     $total += $fuel;
+    
+    while ($fuel > 0) {
+        // get mass of fuel
+        $fuel = floor($fuel/3) - 2;
+        if ($fuel < 0) $fuel = 0;
+        $total += $fuel;
+    }
 }
-
 echo $total;
-
-?>
